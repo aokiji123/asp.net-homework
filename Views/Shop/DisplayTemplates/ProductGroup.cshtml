@@ -1,0 +1,9 @@
+﻿@model ASP_P15.Data.Entities.ProductGroup
+
+<div class="product-group-card">
+    <a asp-action="Group" asp-route-id="@(Model.Slug ?? Model.Id.ToString())">
+        <h2>@Model.Name</h2>
+        <img src="/Home/Download/Shop_@(Model.Image)" alt="Picture" />
+        <p>@Model.Description</p>
+    </a>
+</div>

@@ -1,0 +1,21 @@
+﻿@model ASP_P15.Data.Entities.Product
+
+
+<div class="product-card">
+    <a asp-action="Product" asp-route-id="@(Model.Slug ?? Model.Id.ToString())">
+        <div class="product-img-container">
+            <img src="/Home/Download/Shop_@(Model.Image)" alt="Picture" />
+        </div>
+        <div class="product-info-container">
+            <h2>
+                @Model.Name
+            </h2>
+            <p>
+                @Model.Description
+            </p>
+            <h3>
+                ₴@Model.Price
+            </h3>
+        </div>
+    </a>
+</div>

@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Вивчаємо ASP</h1>    
+</div>
+
+<h3><a href="/Home/Intro">Вступ. Перший проєкт.</a></h3>
+<h3><a href="/Home/Razor">Синтаксис Razor.</a></h3>
+<h3><a asp-action="Ioc">Інверсія управління.</a></h3>
+<h3><a asp-action="Shop">Крамниця.</a></h3>
+<h3><a asp-action="Product">Додавання продукту</a></h3>
+
+@if (Context.User.Identity?.IsAuthenticated ?? false)
+{
+    <b>Ви авторизовані</b>
+}
+else
+{
+    <i>Немає авторизації</i>
+}

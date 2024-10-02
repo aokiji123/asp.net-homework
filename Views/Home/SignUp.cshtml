@@ -1,0 +1,186 @@
+﻿@* для моделі вказуємо лише тип, сама модель доступна через поле Model *@
+@model ASP_P15.Models.Home.SignUpPageModel
+@{
+    ViewData["Title"] = "SignUp";
+}
+
+<div class="page-title">
+    <img src="/img/asp.net.png" alt="ASP logo" />
+    <h1 class="display-4">Реєстрація користувача.</h1>
+</div>
+
+<form enctype="multipart/form-data" asp-action="RegUser" method="post">
+    <div class="row">
+        <div class="col col-6">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="email-addon"><i class="bi bi-at"></i></span>
+                @{
+                    String emailClass = Model.ValidationErrors == null
+                    ? String.Empty
+                    : Model.ValidationErrors[nameof(Model.FormModel.UserEmail)] == null
+                        ? "is-valid"
+                        : "is-invalid";
+                }
+                <input type="text" 
+                       class="form-control @emailClass"
+                       placeholder="Ел. пошта"
+                       name="user-email" value="@(Model.FormModel?.UserEmail)"
+                       aria-label="Ел. пошта" aria-describedby="email-addon"/>
+                @if(!String.IsNullOrEmpty(
+                    Model.ValidationErrors?[
+                        nameof(Model.FormModel.UserEmail)])) 
+                {
+                    <div class="invalid-feedback">
+                        @Model.ValidationErrors[nameof(Model.FormModel.UserEmail)]
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col col-6">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="name-addon"><i class="bi bi-person-vcard"></i></span>
+                @{
+                    String nameClass = Model.ValidationErrors == null
+                    ? String.Empty
+                    : Model.ValidationErrors[nameof(Model.FormModel.UserName)] == null
+                        ? "is-valid"
+                        : "is-invalid";
+                }
+                <input type="text" class="form-control @nameClass" placeholder="Ваше Ім'я"
+                       name="user-name"
+                       aria-label="Ваше Ім'я" aria-describedby="name-addon"/>
+                @if (!String.IsNullOrEmpty(
+                    Model.ValidationErrors?[
+                        nameof(Model.FormModel.UserName)]))
+                {
+                    <div class="invalid-feedback">
+                        @Model.ValidationErrors[nameof(Model.FormModel.UserName)]
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-6">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="password-addon"><i class="bi bi-lock"></i></span>
+                @{
+                    String passwordClass = Model.ValidationErrors == null
+                    ? String.Empty
+                    : Model.ValidationErrors[nameof(Model.FormModel.UserPassword)] == null
+                    ? "is-valid"
+                    : "is-invalid";
+                }
+                <input type="password"
+                       name="user-password"
+                       class="form-control @passwordClass"
+                       placeholder="Пароль"
+                       aria-label="Пароль" aria-describedby="password-addon">
+                @if (!String.IsNullOrEmpty(
+                    Model.ValidationErrors?[
+                        nameof(Model.FormModel.UserPassword)]))
+                {
+                    <div class="invalid-feedback">
+                        @Model.ValidationErrors[nameof(Model.FormModel.UserPassword)]
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col col-6">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="repeat-addon"><i class="bi bi-unlock"></i></span>
+                @{
+                    String repeatClass = Model.ValidationErrors == null
+                    ? String.Empty
+                    : Model.ValidationErrors[nameof(Model.FormModel.UserRepeat)] == null
+                    ? "is-valid"
+                    : "is-invalid";
+                }
+                <input type="password"
+                       name="user-repeat"
+                       class="form-control @repeatClass"
+                       placeholder="Повтор паролю"
+                       aria-label="Повтор паролю" aria-describedby="repeat-addon">
+                @if (!String.IsNullOrEmpty(
+                    Model.ValidationErrors?[
+                        nameof(Model.FormModel.UserRepeat)]))
+                {
+                    <div class="invalid-feedback">
+                        @Model.ValidationErrors[nameof(Model.FormModel.UserRepeat)]
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-6">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupFile01"><i class="bi bi-person-square"></i></label>
+                <input type="file" name="user-avatar" class="form-control" id="inputGroupFile01">
+            </div>
+        </div>
+        <div class="col col-6">
+            <div class="d-flex justify-content-between">
+                <div class="form-check form-switch">
+                    @{
+                        String agreeClass = Model.ValidationErrors == null
+                        ? String.Empty
+                        : Model.ValidationErrors[nameof(Model.FormModel.IsAgree)] == null
+                        ? "is-valid"
+                        : "is-invalid";
+                    }
+                    <input name="is-agree"
+                           class="form-check-input @agreeClass"
+                           value="true"
+                           type="checkbox" role="switch" id="rulesSwitch">
+                    <label class="form-check-label" for="rulesSwitch">Згоден з правилами сайту</label>
+                    @if (!String.IsNullOrEmpty(
+                    Model.ValidationErrors?[
+                    nameof(Model.FormModel.IsAgree)]))
+                    {
+                        <div class="invalid-feedback">
+                            @Model.ValidationErrors[nameof(Model.FormModel.IsAgree)]
+                        </div>
+                    }
+                </div>
+                <button type="submit" class="btn btn-outline-secondary">Реєстрація</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@if (ViewData["data"] == null)
+{
+    <p>Немає попередніх даних</p>
+}
+else
+{
+    <p>@ViewData["data"]</p>
+}
+
+@if (ViewData["avatar"] != null)
+{
+    <img src="/Home/Download/@(ViewData["avatar"])" alt="Avatar" />
+}
+
+@if (Model.ValidationErrors != null)
+{
+    foreach(var pair in Model.ValidationErrors)
+    {
+        <p>@pair.Key --- @(pair.Value ?? "OK")</p>
+    }
+}
+
+
+Д.З. Реалізувати збереження даних у БД з попереднього Д.З.
+- описати сутність Product
+- додати до контексту даних
+- створити міграцію
+- застосувати міграцію
+- додати коди передачі даних до БД
+
+Попереднє Д.З. Форма "админка" - створити форму для додавання товару:
+назва, опис, ціна, кількість шт на складі 
+Реалізувати правильний обіг даних (з перенаправленням / сесією)
+Вивести нижче форми повідомлення "Немає попередніх даних" або 
+самі дані, що були передані. 
